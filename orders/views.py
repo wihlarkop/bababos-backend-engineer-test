@@ -94,9 +94,10 @@ class QuotationView(APIView):
         if not quotation:
             return JsonResponse(message='Quotation not found')
 
-        order_items = quotation.orderitems_set.select_related('sku_id').only('sku_id', 'quantity').order_by('sku_id')
+        quotation_items = quotation.orderitems_set.select_related('sku_id').only('sku_id', 'quantity').order_by(
+            'sku_id')
 
-        sku_ids = order_items.values_list('sku_id', flat=True)
+        sku_ids = quotation_items.values_list('sku_id', flat=True)
 
         history_price_queryset = OrderItems.objects.filter(
             order_id__status='Accepted',
@@ -119,15 +120,15 @@ class QuotationView(APIView):
                 'total_price': total_price
             })
 
-        result = []
+        order_items = []
 
-        for item in order_items:
+        for item in quotation_items:
             new_x = item.quantity  # quantity yang di request
 
-            for trx in history_price:
-                x = trx.get('quantity')  # quantity
-                y = trx.get('total_price')  # price
-                sku_id = trx.get('sku_id')
+            for history in history_price:
+                x = history.get('quantity')  # quantity
+                y = history.get('total_price')  # price
+                sku_id = history.get('sku_id')
 
                 if item.sku_id.sku_id == sku_id:
                     if len(x) != 1:
@@ -141,18 +142,23 @@ class QuotationView(APIView):
                         else:
                             rounded_predicted_y = y[-1]
 
-                        result.append({
+                        order_items.append({
                             "product": sku_id,
                             "quantity": new_x,
                             "price": rounded_predicted_y
                         })
                     else:
-                        result.append({
+                        order_items.append({
                             "product": sku_id,
                             "quantity": new_x,
                             "price": round(y[0], 2)
                         })
 
+        result = {
+            "id": quotation.id,
+            "customer_id": quotation.customer_id_id,
+            "order_items": order_items
+        }
         return JsonResponse(data=result)
 
 
