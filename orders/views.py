@@ -1,4 +1,5 @@
 from itertools import groupby
+from statistics import linear_regression
 
 from django.db.models import F
 from drf_yasg import openapi
@@ -10,7 +11,6 @@ from core.utils import JsonResponse
 from orders.filter import QuotationFilter
 from orders.models import Orders, ACCEPTED, PENDING, OrderItems
 from orders.serializers import (
-    QuotationSerializer,
     QuotationReadSerializer,
     QuotationWriteSerializer,
     HistoricalPriceSerializers,
@@ -75,7 +75,6 @@ class QuotationsView(APIView):
 
 
 class QuotationView(APIView):
-    serializer = QuotationSerializer
     model = Orders
 
     def get_object(self, quotation_id):
@@ -86,7 +85,7 @@ class QuotationView(APIView):
 
     @swagger_auto_schema(
         operation_id='quotation_detail',
-        responses={200: openapi.Response("success response", serializer)},
+        responses={200: openapi.Response("success response")},
         security=[{}]
         # security=[{"Bearer": {}}]
     )
@@ -119,6 +118,7 @@ class QuotationView(APIView):
                 'quantity': quantity,
                 'total_price': total_price
             })
+
         result = []
 
         for item in order_items:
@@ -214,20 +214,3 @@ class HistoricalPriceView(APIView):
 
         serializer = self.serializer(instance=data)
         return JsonResponse(data=serializer.data)
-
-
-def linear_regression(x: list[float], y: list[float]):
-    n = len(x)
-    sum_x, sum_y = 0.0, 0.0
-    sum_xy, sum_x2 = 0.0, 0.0
-
-    for i in range(n):
-        sum_x += x[i]  # 6.0
-        sum_y += y[i]  # 11810810.808
-        sum_xy += x[i] * y[i]  # 70864864.848
-        sum_x2 += x[i] * x[i]  # 36.0
-
-    gradient = (float(n) * sum_xy - sum_x * sum_y) / (float(n) * sum_x2 - sum_x * sum_x)
-    intercept = (sum_y - gradient * sum_x) / float(n)
-
-    return gradient, intercept

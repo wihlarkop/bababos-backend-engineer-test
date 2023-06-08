@@ -27,22 +27,6 @@ class QuotationWriteSerializer(serializers.ModelSerializer):
         fields = ['customer_id', 'sku_id', 'quantity', 'uom_id']
 
 
-class PriceListRecommendationSerializer(serializers.Serializer):
-    sku_id = serializers.CharField()
-    supplier_id = serializers.CharField()
-    stock = serializers.IntegerField()
-    price_recommended = serializers.FloatField()
-
-
-class QuotationSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    customer_id = serializers.CharField()
-    sku_id = serializers.CharField()
-    quantity = serializers.IntegerField()
-    uom_id = serializers.CharField()
-    recommendation = PriceListRecommendationSerializer(many=True)
-
-
 class HistoricalPriceSerializers(serializers.ModelSerializer):
     order_items = QuotationItemsReadSerializer(many=True)
 
