@@ -8,7 +8,7 @@ Based on the problem statement, create a proposed solution with:
 
 - [ ] The application must first log in using a Google Account (optional but is a plus)
 
-- [ ] A clear and detailed description of your flow of the logic (you can use Miro or Google
+- [x] A clear and detailed description of your flow of the logic (you can use Miro or Google
 Slide or any other tools that you are comfortable with)
 
 - [X] You are showcasing your logic in your coding. It doesn’t have to be a full-fledged
@@ -44,7 +44,7 @@ handling of edge cases.
 
 ## Tech Stack
 
-**Server:** Python, Django, PostgreSQL, Docker
+**Server:** Python, Django, PostgreSQL, Docker, Swagger
 
 ## Run Locally
 
@@ -109,3 +109,11 @@ python manage.py runserver
 ```
 
 then you can open url at http://localhost:8000/
+
+link for persentation (https://docs.google.com/presentation/d/1mReJZ2zwO28solyksnRYNOcT_UUwQ58nnPE50l_ujyk/edit?usp=sharing)
+
+Flowchart
+![Flowchart](/images/Flowchart.jpg).
+
+ERD
+![ERD](/images/erd.jpg).

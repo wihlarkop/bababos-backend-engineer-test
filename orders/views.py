@@ -127,7 +127,7 @@ class QuotationView(APIView):
 
             for history in history_price:
                 x = history.get('quantity')  # quantity
-                y = history.get('total_price')  # price
+                y = sorted(history.get('total_price'))  # price
                 sku_id = history.get('sku_id')
 
                 if item.sku_id.sku_id == sku_id:
@@ -138,9 +138,13 @@ class QuotationView(APIView):
                         rounded_predicted_y = round(predicted_y, 2)
 
                         if y[0] <= rounded_predicted_y <= y[-1]:
-                            rounded_predicted_y = y[0]
+                            pass
                         else:
-                            rounded_predicted_y = y[-1]
+                            if rounded_predicted_y <= y[0]:
+                                rounded_predicted_y = y[0]
+
+                            if rounded_predicted_y >= y[-1]:
+                                rounded_predicted_y = y[-1]
 
                         order_items.append({
                             "product": sku_id,
