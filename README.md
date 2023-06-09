@@ -110,7 +110,7 @@ python manage.py runserver
 
 then you can open url at http://localhost:8000/
 
-link for persentation (https://docs.google.com/presentation/d/1mReJZ2zwO28solyksnRYNOcT_UUwQ58nnPE50l_ujyk/edit?usp=sharing)
+link for persentation (https://www.figma.com/proto/BPiI0RmN6skFU5n1DequPD/Bababos-Backend-Engineer-Test?type=design&node-id=102-2&scaling=contain&page-id=0%3A1&starting-point-node-id=102%3A2)
 
 Flowchart
 ![Flowchart](/images/Flowchart.jpg).
